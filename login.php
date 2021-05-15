@@ -1,11 +1,34 @@
 <?php include 'config.php' ?>
+
 <?php
-session_start();
+/* SE VIENE PREMUTO IL TASTO ACCEDI */
+if (isset($_POST["login"])) {
+    /* RICEZIONE INPUT DAL FORM */
+    $user_username = mysqli_real_escape_string($connection, stripslashes($_POST["username"]));
+    $user_password = md5(mysqli_real_escape_string($connection, stripslashes($_POST["password"])));
 
-$_SESSION["login"] = true;
+    /* SE L'UTENTE LASCIA UN CAMPO VUOTO */
+    if (empty($user_username) || empty($user_password)) {
+        $_SESSION["error"] = 1;
+        $error = "Devi compilare tutti i campi!";
+    }
 
-$error = false; ?>
+    /* SE L'UTENTE É PRESENTE NEL DATABASE*/
+    $sql = "SELECT *
+            FROM utenti
+            WHERE Username = '$user_username' AND Password = '$user_password'";
+    $result = mysqli_query($connection, $sql);
+    if (mysqli_num_rows($result) == 1) {
+        $_SESSION["login"] = 1;
+        $_SESSION['username'] = $user_username;
 
+        header("Location: user-settings.php"); // reinderizzamento all'area riservata
+    } else {
+        $_SESSION["error"] = 1;
+        $error = "Nome utente o password errati!";
+    }
+}
+?>
 
 <!DOCTYPE html>
 <html lang="it">
@@ -16,12 +39,12 @@ $error = false; ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $website_name ?> - Accedi</title>
 
-    <?php include 'assets/template/resource.php' ?>
+    <?php include 'template/resource.php' ?>
 </head>
 
 <body>
-    <?php include 'assets/template/header.php' ?>
-    <!-- Hero -->
+    <?php include 'template/header.php' ?>
+    <!-- Hero Banner -->
     <section class="hero is-small is-primary">
         <div class="hero-body">
             <div class="container">
@@ -32,11 +55,11 @@ $error = false; ?>
     </section>
     <!-- Sezione Form -->
     <section class="section">
-        <div class="container is-max-desktop">
-            <?php if ($error == true) : ?>
+        <div class="container is-max-desktop box">
+            <?php if ($_SESSION["error"] == 1) :  ?>
                 <article class="message is-danger">
                     <div class="message-body">
-                        Nome Utente o Password errati.
+                        <?php echo $error; ?>
                     </div>
                 </article>
             <?php endif; ?>
@@ -44,7 +67,7 @@ $error = false; ?>
                 <div class="field">
                     <label class="label">Nome Utente</label>
                     <p class="control has-icons-left">
-                        <input class="input" type="text" placeholder="Nome Utente" name="username" required>
+                        <input class="input" type="text" placeholder="Nome Utente" name="username">
                         <span class="icon is-small is-left">
                             <i class="fas fa-user"></i>
                         </span>
@@ -53,7 +76,7 @@ $error = false; ?>
                 <div class="field">
                     <label class="label">Password</label>
                     <p class="control has-icons-left">
-                        <input class="input" type="password" placeholder="Password" name="password" required>
+                        <input class="input" type="password" placeholder="Password" name="password">
                         <span class="icon is-small is-left">
                             <i class="fas fa-lock"></i>
                         </span>
@@ -69,40 +92,13 @@ $error = false; ?>
                 </div>
                 <div class="field is-grouped">
                     <div class="control">
-                        <button class="button is-primary" name="accedi">Accedi</button>
-                    </div>
-                    <div class="control">
-                        <button class="button is-light">Cancella</button>
+                        <button class="button is-primary" type="submit" name="login">Accedi</button>
                     </div>
                 </div>
             </form>
         </div>
     </section>
-    <?php include 'assets/template/footer.php' ?>
+    <?php include 'template/footer.php'; ?>
 </body>
-
-<?php
-if (isset($_POST["accedi"])) {
-    $error = false;
-    $user_username = mysqli_real_escape_string($connection, stripslashes($_POST["username"]));
-    $user_password = mysqli_real_escape_string($connection, stripslashes($_POST["password"]));
-    $user_password_md5 = md5($user_password);
-
-    $sql = "SELECT *
-            FROM utenti
-            WHERE Username = '$user_username' AND Password = '$user_password_md5'";
-
-    $result = mysqli_query($connection, $sql);
-
-    if (mysqli_num_rows($result) == 1) {
-        $error = false;
-        $_SESSION['username'] = $user_username;
-        $_SESSION['password'] = $user_password_md5;
-        header("Location: user-settings.php"); // reinderizzamento all'area riservata
-    } else {
-        $error = true;
-    }
-}
-?>
 
 </html>
