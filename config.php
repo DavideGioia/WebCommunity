@@ -1,7 +1,4 @@
-<!-- Questa configurazione 
-viene utilizzata per gestire 
-le variabili all'interno della pagina 
-e facilitarmi il lavoro -->
+<!-- File di Configurazione -->
 
 <?php
 /* Configurazione Generale */
@@ -14,4 +11,10 @@ $db_password = "";
 $db_name = "webcommunity";
 
 $connection = mysqli_connect($db_host, $db_username, $db_password, $db_name);
+
+/* Inizio Sessione */
+session_start();
+
+$_SESSION["error"] = 0;
+$error = "";
 ?>
