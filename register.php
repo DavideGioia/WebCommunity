@@ -25,7 +25,7 @@ if (isset($_POST["register"])) {
             FROM utenti 
             WHERE username = '$user_username' OR email = '$user_email' LIMIT 1";
     $result = mysqli_query($connection, $sql);
-    $user = mysqli_fetch_assoc($result);
+    $user = mysqli_fetch_assoc($result); // trasforma i dati dell'utente in un array associativo
 
     /* SE L'UTENTE ESISTE */
     if ($user) {
@@ -40,16 +40,44 @@ if (isset($_POST["register"])) {
 
     /* SE NON SONO PRESENTI ERRORI */
     if ($_SESSION["error"] == 0) {
-        $user_password = md5($user_confirmpassword);
+        $user_password = md5($user_confirmpassword); // Salva la password in MD5
 
+        // Inserisce nella tabella utenti le informazioni prese dal form
         $sql = "INSERT INTO utenti (username, nome, cognome, email, password)
                 VALUES ('$user_username', '$user_name', '$user_surname', '$user_email', '$user_password')";
 
         mysqli_query($connection, $sql);
 
-        $_SESSION["login"] = true;
-        $_SESSION["username"] = $user_username;
-        header('location: user-settings.php');
+        // Inserisce nella tabella scelte le categorie scelte dall'utente
+        $sql = "SELECT *
+                FROM categorie";
+        $results = mysqli_query($connection, $sql);
+
+        while ($row = mysqli_fetch_array($results)) {
+            $category_name = $row["nome"];
+            $category_id = $row["ID"];
+
+            /* Se la categoria ha un valore */
+            if (isset($_POST["$category_name"])) {
+                // seleziona l'utente che ha effettuato la registrazione
+                $sql = "SELECT ID
+                        FROM utenti
+                        WHERE username = '$user_username' AND email = '$user_email' LIMIT 1";
+                $result = mysqli_query($connection, $sql);
+                $user = mysqli_fetch_assoc($result);
+
+                $is_checked = $category_id;
+                // inserisce nel database le scelte dell'utente
+                $sql = "INSERT INTO scelte (ID_utente, ID_categoria)
+                        VALUES ('$user[ID]', '$is_checked')";
+                mysqli_query($connection, $sql);
+                echo "variabile: " . $is_checked;
+            }
+        }
+
+        $_SESSION["login"] = 1; // variabile che informa se un utente é loggato o no
+        $_SESSION["username"] = $user_username; // variabile che salva il nome utente di chi ha loggato
+        header('refresh:2;url=user-settings.php'); // reinderizzamento pannello utente
     }
 }
 ?>
@@ -148,14 +176,16 @@ if (isset($_POST["register"])) {
                 <div class="field">
                     <label class="label">Seleziona le Categorie che preferisci</label>
                     <div class="field-body">
+                        <!-- STAMPA SU SCHERMO LE CATEGORIE INSERITE NEL DATABASE -->
                         <?php
                         $sql = "SELECT *
                                 FROM categorie";
                         $results = mysqli_query($connection, $sql);
-                        ?>
-                        <?php
+
                         while ($row = mysqli_fetch_array($results)) {
-                            echo "<label class='checkbox'>" . "<input type='checkbox' >" . $row["nome"] . "</label>";
+                            $category_name = $row["nome"];
+                            $category_id = $row["ID"];
+                            echo "<label class='checkbox'>" . "<input type='checkbox' name='$category_name' value='$category_id'>" . $category_name . "</label>";
                         }
                         ?>
 
@@ -174,9 +204,6 @@ if (isset($_POST["register"])) {
     print_r($_POST);
     echo "<br>";
     print_r($_SESSION);
-    echo "<br>";
-    print_r($user_data);
-    echo "<br>";
     ?>
 </body>
 

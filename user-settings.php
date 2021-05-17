@@ -42,7 +42,7 @@
                             <div class="modal-background"></div>
                             <div class="modal-card">
                                 <header class="modal-card-head">
-                                    <p class="modal-card-title">Eliminazione Profilo</p>
+                                    <p class="modal-card-title" onclick="deleteprofile()">Eliminazione Profilo</p>
                                     <button class="delete" aria-label="close" id="close-popup"></button>
                                 </header>
                                 <section class="modal-card-body">
@@ -71,7 +71,6 @@
                 </article>
             </div>
         <?php endif; ?>
-
     </section>
 
     <?php include 'template/footer.php';
