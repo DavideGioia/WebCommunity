@@ -34,15 +34,81 @@
                 <div class="container is-max-desktop">
                     <h4 class="title is-4">Impostazioni Profilo</h4>
                     <div class="box">
-                        <h5 class="title is-5">Elimina il tuo Profilo</h5>
-                        <div class="buttons">
-                            <button class="button is-danger" id="delete-profile">Elimina Profilo</button>
-                        </div>
+                        <form action="" method="post">
+                            <div class="field">
+                                <label class="label">Il tuo Nome Utente</label>
+                                <p class="control has-icons-left">
+                                    <input class="input" type="text" placeholder="<?php echo $_SESSION["username"] ?>" disabled>
+                                    <span class="icon is-small is-left">
+                                        <i class="fas fa-user"></i>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="field">
+                                <label class="label">La tua E-Mail</label>
+                                <p class="control has-icons-left">
+                                    <input class="input" type="email" placeholder="<?php echo $_SESSION["email"] ?>" disabled>
+                                    <span class="icon is-small is-left">
+                                        <i class="fas fa-envelope"></i>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="field">
+                                <label class="label">Modifica Nome e Cognome</label>
+                                <div class="field-body">
+                                    <div class="field">
+                                        <p class="control is-expanded has-icons-left">
+                                            <input class="input" type="text" placeholder="Inserisci nuovo Nome" value="<?php echo $_SESSION["name"] ?>">
+                                            <span class="icon is-small is-left">
+                                                <i class="fas fa-lock"></i>
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div class="field">
+                                        <p class="control is-expanded has-icons-left has-icons-right">
+                                            <input class="input" type="text" placeholder="Inserisci nuovo Cognome" value="<?php echo $_SESSION["surname"] ?>">
+                                            <span class="icon is-small is-left">
+                                                <i class="fas fa-lock"></i>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label class="label">Modifica Password</label>
+                                <div class="field-body">
+                                    <div class="field">
+                                        <p class="control is-expanded has-icons-left">
+                                            <input class="input" type="password" placeholder="Vecchia Password">
+                                            <span class="icon is-small is-left">
+                                                <i class="fas fa-lock"></i>
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div class="field">
+                                        <p class="control is-expanded has-icons-left has-icons-right">
+                                            <input class="input" type="password" placeholder="Nuova Password">
+                                            <span class="icon is-small is-left">
+                                                <i class="fas fa-lock"></i>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field is-grouped">
+                                <div class="control">
+                                    <button class="button is-primary">Salva nuove Impostazioni</button>
+                                </div>
+                            </div>
+                        </form>
+                        <br>
+                        <!-- PULSANTE E POPUP ELIMINAZIONE PROFILO -->
+                        <button class="button is-danger is-light" id="delete-profile">Elimina Profilo</button>
                         <div class="modal" id="delete-profile-popup">
                             <div class="modal-background"></div>
                             <div class="modal-card">
                                 <header class="modal-card-head">
-                                    <p class="modal-card-title" onclick="deleteprofile()">Eliminazione Profilo</p>
+                                    <p class="modal-card-title">Eliminazione Profilo</p>
                                     <button class="delete" aria-label="close" id="close-popup"></button>
                                 </header>
                                 <section class="modal-card-body">
@@ -55,7 +121,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
             </section>
             <!-- ERRORE SE L'UTENTE ENTRA NELLA PAGINA SENZA ACCESSO -->
         <?php else : ?>
@@ -73,9 +138,9 @@
         <?php endif; ?>
     </section>
 
-    <?php include 'template/footer.php';
-    print_r($_SESSION);
-    ?>
+    <?php include 'template/footer.php'; ?>
+
+    <?php include 'template/debug.php'; ?>
 </body>
 
 </html>

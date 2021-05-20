@@ -34,6 +34,10 @@ unset($_SESSION["login"]);
         </div>
     </section>
     <?php header("refresh:5;url=http://localhost/ELABORATO/index.php"); ?>
+
+    <?php include 'template/footer.php' ?>
+
+    <?php include 'template/debug.php'; ?>
 </body>
 
 </html>

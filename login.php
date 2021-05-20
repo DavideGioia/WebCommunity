@@ -19,8 +19,16 @@ if (isset($_POST["login"])) {
             WHERE Username = '$user_username' AND Password = '$user_password'";
     $result = mysqli_query($connection, $sql);
     if (mysqli_num_rows($result) == 1) {
-        $_SESSION["login"] = 1;
-        $_SESSION['username'] = $user_username;
+        $row = mysqli_fetch_array($result); // imposta il risultato della query come array associativo in una variabile
+        $_SESSION["login"] = 1; // Imposta il login come effettuato
+
+        /* Salvataggio dati utente in SESSIONE */
+        $_SESSION["ID"] = $row["ID"];
+        $_SESSION["username"] = $row["username"];
+        $_SESSION["name"] = $row["nome"];
+        $_SESSION["surname"] = $row["cognome"];
+        $_SESSION["email"] = $row["email"];
+        $_SESSION["password"] = $row["password"];
 
         header("Location: user-settings.php"); // reinderizzamento all'area riservata
     } else {
@@ -82,14 +90,6 @@ if (isset($_POST["login"])) {
                         </span>
                     </p>
                 </div>
-                <div class="field">
-                    <div class="control">
-                        <label class="checkbox">
-                            <input type="checkbox">
-                            Ricordati di me
-                        </label>
-                    </div>
-                </div>
                 <div class="field is-grouped">
                     <div class="control">
                         <button class="button is-primary" type="submit" name="login">Accedi</button>
@@ -99,6 +99,8 @@ if (isset($_POST["login"])) {
         </div>
     </section>
     <?php include 'template/footer.php'; ?>
+
+    <?php include 'template/debug.php'; ?>
 </body>
 
 </html>

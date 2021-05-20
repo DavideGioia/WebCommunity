@@ -14,6 +14,7 @@
 
 <body>
     <?php include 'template/header.php' ?>
+
     <section class="hero is-primary">
         <div class="hero-body ">
             <div class="container">
@@ -22,20 +23,31 @@
             </div>
         </div>
     </section>
+
     <section class="section">
         <div class="container is-max-desktop">
             <h1 class="title">Lista Eventi</h1>
-            <div class="field is-grouped">
+            <?php if (isset($_SESSION["login"])) : ?>
                 <div class="control">
-                    <button class="button is-primary">Inserisci nuovo Evento</button>
+                    <a class="button is-primary" href="add-event.php">Inserisci nuovo Evento</a>
                 </div>
-            </div>
+            <?php else : ?>
+                <article class="message is-info">
+                    <div class="message-header">
+                        <p>Info</p>
+                    </div>
+                    <div class="message-body">
+                        Ciao! Al momento stai visualizzando il sito web in modalitá Ospite!
+                        Effettua l'Accesso per poter inserire nuovi Eventi e scrivere Post!
+                    </div>
+                </article>
+            <?php endif; ?>
             <?php
-            $sql = "SELECT *,eventi.ID AS IDEvento
+            $sql = "SELECT *,eventi.ID AS IDEvento, utenti.ID AS IDUtente
                     FROM eventi INNER JOIN utenti
                     ON ID_utente = utenti.ID ";
-            $results = mysqli_query($connection, $sql);
-            while ($row = mysqli_fetch_array($results)) : ?>
+            $result = mysqli_query($connection, $sql);
+            while ($row = mysqli_fetch_array($result)) : ?>
                 <div class="card">
                     <div class="card-content">
                         <div class="media">
@@ -63,32 +75,20 @@
                         <section class="modal-card-body">
                             <?php
                             $sql = "SELECT *
-                                    FROM post INNER JOIN utenti
-                                    WHERE ID_evento = $row[IDEvento];";
+                                    FROM post INNER JOIN utenti ON ID_utente = utenti.ID
+                                    WHERE ID_evento = $row[IDEvento]";
                             $results2 = mysqli_query($connection, $sql);
-                            while ($row2 = mysqli_fetch_array($results2)) : ?>
-                                <strong>[Voto: <?php echo $row2["voto"]; ?>] <?php echo $row2["username"]; ?>: </strong><?php echo $row2["commento"]; ?>
-                                <br>
-                                <div class="card">
-                                    <div class="card-content">
-                                        <div class="media">
-                                            <div class="media-content">
-                                                <p class="title is-5"><?php echo $row2["username"]; ?></p>
-                                                <p class="title is-6"><?php echo $row2["voto"]; ?></p>
-                                            </div>
-                                        </div>
-                                        <div class="content">
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                            Phasellus nec iaculis mauris. <a>@bulmaio</a>.
-                                            <br>
-                                            <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endwhile; ?>
+                            if (mysqli_num_rows($results2) > 0) : ?>
+                                <?php while ($row2 = mysqli_fetch_array($results2)) : ?>
+                                    <strong>[Voto: <?php echo $row2["voto"]; ?>] <?php echo $row2["username"]; ?>: </strong><?php echo $row2["commento"]; ?>
+                                    <br>
+                                <?php endwhile; ?>
+                            <?php else : ?>
+                                <p>Al momento non ci sono commenti, scrivine uno!</p>
+                            <?php endif; ?>
                         </section>
                         <footer class="modal-card-foot">
-                            <a class="button is-success" href="register.php">Scrivi un Commento</a>
+                            <a class="button is-success" href="add-comment.php?event=<?php echo $row["IDEvento"] ?>">Scrivi un Commento</a>
                         </footer>
                     </div>
                 </div>
@@ -103,6 +103,7 @@
     </section>
     <?php include 'template/footer.php' ?>
 
+    <?php include 'template/debug.php'; ?>
 </body>
 
 </html>

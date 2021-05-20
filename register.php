@@ -75,9 +75,7 @@ if (isset($_POST["register"])) {
             }
         }
 
-        $_SESSION["login"] = 1; // variabile che informa se un utente é loggato o no
-        $_SESSION["username"] = $user_username; // variabile che salva il nome utente di chi ha loggato
-        header('refresh:2;url=user-settings.php'); // reinderizzamento pannello utente
+        header('refresh:0;url=login.php'); // reinderizzamento pannello utente
     }
 }
 ?>
@@ -200,11 +198,9 @@ if (isset($_POST["register"])) {
             </form>
         </div>
     </section>
-    <?php include 'template/footer.php';
-    print_r($_POST);
-    echo "<br>";
-    print_r($_SESSION);
-    ?>
+    <?php include 'template/footer.php'; ?>
+
+    <?php include 'template/debug.php'; ?>
 </body>
 
 </html>

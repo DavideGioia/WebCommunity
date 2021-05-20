@@ -1,8 +1,8 @@
-<!-- File di Configurazione -->
-
 <?php
 /* Configurazione Generale */
-$website_name = "Web Community";
+$website_name = "Web Community"; // Modifica il nome del Sito Web in tutte le pagine
+$show_debug = true; // Mostra le variabili per il debug
+
 
 /* Connessione DATABASE */
 $db_host = "localhost";
@@ -12,9 +12,9 @@ $db_name = "webcommunity";
 
 $connection = mysqli_connect($db_host, $db_username, $db_password, $db_name);
 
-/* Inizio Sessione */
+/* AVVIO SESSIONE */
 session_start();
 
-$_SESSION["error"] = 0;
-$error = "";
-?>
+/* GESTIONE ERRORI */
+$_SESSION["error"] = 0; // Decide se ci sono errori o meno
+$error = ""; // Salva un messaggio di errore
