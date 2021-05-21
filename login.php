@@ -3,6 +3,7 @@
 <?php
 /* SE VIENE PREMUTO IL TASTO ACCEDI */
 if (isset($_POST["login"])) {
+
     /* RICEZIONE INPUT DAL FORM */
     $user_username = mysqli_real_escape_string($connection, stripslashes($_POST["username"]));
     $user_password = md5(mysqli_real_escape_string($connection, stripslashes($_POST["password"])));
@@ -52,7 +53,8 @@ if (isset($_POST["login"])) {
 
 <body>
     <?php include 'template/header.php' ?>
-    <!-- Hero Banner -->
+
+    <!-- INIZIO Hero Banner -->
     <section class="hero is-small is-primary">
         <div class="hero-body">
             <div class="container">
@@ -61,43 +63,59 @@ if (isset($_POST["login"])) {
             </div>
         </div>
     </section>
-    <!-- Sezione Form -->
+
+    <!-- CONTENUTO PAGINA -->
     <section class="section">
-        <div class="container is-max-desktop box">
-            <?php if ($_SESSION["error"] == 1) :  ?>
+        <?php if (!isset($_SESSION["login"])) : ?>
+            <div class="container is-max-desktop box">
+
+                <!-- MOSTRA MESSAGGIO IN CASO DI ERRORE -->
+                <?php if ($_SESSION["error"] == 1) :  ?>
+                    <article class="message is-danger">
+                        <div class="message-body">
+                            <?php echo $error; ?>
+                        </div>
+                    </article>
+                <?php endif; ?>
+
+                <!-- INIZIO Form -->
+                <form action="" method="post">
+                    <div class="field">
+                        <label class="label">Nome Utente</label>
+                        <p class="control has-icons-left">
+                            <input class="input" type="text" placeholder="Nome Utente" name="username"> <!-- INPUT Nome Utente -->
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-user"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <label class="label">Password</label>
+                        <p class="control has-icons-left">
+                            <input class="input" type="password" placeholder="Password" name="password"> <!-- INPUT Password -->
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="field is-grouped">
+                        <div class="control">
+                            <button class="button is-primary" type="submit" name="login">Accedi</button> <!-- PULSANTE Conferma -->
+                        </div>
+                    </div>
+                </form>
+            </div>
+        <?php else : ?>
+            <div class="container is-max-desktop">
                 <article class="message is-danger">
                     <div class="message-body">
-                        <?php echo $error; ?>
+                        Hai giá effettuato l'accesso!
                     </div>
                 </article>
-            <?php endif; ?>
-            <form action="" method="post">
-                <div class="field">
-                    <label class="label">Nome Utente</label>
-                    <p class="control has-icons-left">
-                        <input class="input" type="text" placeholder="Nome Utente" name="username">
-                        <span class="icon is-small is-left">
-                            <i class="fas fa-user"></i>
-                        </span>
-                    </p>
-                </div>
-                <div class="field">
-                    <label class="label">Password</label>
-                    <p class="control has-icons-left">
-                        <input class="input" type="password" placeholder="Password" name="password">
-                        <span class="icon is-small is-left">
-                            <i class="fas fa-lock"></i>
-                        </span>
-                    </p>
-                </div>
-                <div class="field is-grouped">
-                    <div class="control">
-                        <button class="button is-primary" type="submit" name="login">Accedi</button>
-                    </div>
-                </div>
-            </form>
-        </div>
+            </div>
+        <?php endif; ?>
     </section>
+
     <?php include 'template/footer.php'; ?>
 
     <?php include 'template/debug.php'; ?>

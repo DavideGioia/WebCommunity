@@ -20,6 +20,7 @@ if (isset($_POST["add-comment"])) {
         $_SESSION["error"] = 1;
         $error = "Hai giá inserito un commento per questo Evento. Prova con un altro!";
     } else {
+
         /* INSERISCE NEL DATABASE IL POST DELL'UTENTE */
         $sql = "INSERT INTO post (commento, voto, data, ID_utente, ID_Evento)
                 VALUES ('$comment', ' $vote', '$date', '$_SESSION[ID]', '$_GET[event]')";
@@ -55,45 +56,56 @@ if (isset($_POST["add-comment"])) {
 
     <!-- CONTENUTO PAGINA -->
     <section class="section">
-        <div class="container is-max-desktop box">
+        <!-- SE L'UTENTE HA EFFETTUATO L'ACCESSO E SI ENTRA CLICCATO SULL'APPOSITO PULSANTE -->
+        <?php if (isset($_SESSION["login"]) and isset($_GET["event"])) : ?>
+            <div class="container is-max-desktop box">
 
-            <!-- MOSTRA ERRORE SU SCHERMO -->
-            <?php if ($_SESSION["error"] == 1) : ?>
+                <!-- MOSTRA MESSAGGIO IN CASO DI ERRORE -->
+                <?php if ($_SESSION["error"] == 1) : ?>
+                    <article class="message is-danger">
+                        <div class="message-body">
+                            <?php echo $error; ?>
+                        </div>
+                    </article>
+                <?php endif; ?>
+
+                <!-- INIZIO Form -->
+                <form action="" method="post">
+                    <div class="field">
+                        <label class="label">Commento</label>
+                        <p class="control has-icons-left">
+                            <input class="input" type="text" placeholder="Commento" name="comment" required> <!-- INPUT Commento -->
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-user"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <label class="label">Valutazione Evento</label>
+                        <p class="control has-icons-left">
+                            <input class="input" type="number" placeholder="Voto da 1 a 10" name="vote" max="10" min="1" required> <!-- INPUT Voto -->
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-user"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="field is-grouped">
+                        <div class="control">
+                            <button class="button is-primary" name="add-comment">Scrivi Commento</button> <!-- PULSANTE Conferma -->
+                        </div>
+                    </div>
+                </form>
+            </div>
+        <?php else : ?>
+            <!-- MESSAGGIO DI ERRORE SE L'UTENTE NON HA EFFETTUATO L'ACCESSO -->
+            <div class="container is-max-desktop">
                 <article class="message is-danger">
                     <div class="message-body">
-                        <?php echo $error; ?>
+                        Non puoi accedere a questa pagina manualmente!
                     </div>
                 </article>
-            <?php endif; ?>
-
-            <!-- INIZIO Form -->
-            <form action="" method="post">
-                <div class="field">
-                    <label class="label">Commento</label>
-                    <p class="control has-icons-left">
-                        <input class="input" type="text" placeholder="Commento" name="comment" required> <!-- INPUT Commento -->
-                        <span class="icon is-small is-left">
-                            <i class="fas fa-user"></i>
-                        </span>
-                    </p>
-                </div>
-                <div class="field">
-                    <label class="label">Valutazione Evento</label>
-                    <p class="control has-icons-left">
-                        <input class="input" type="number" placeholder="Voto da 1 a 10" name="vote" max="10" min="1" required> <!-- INPUT Voto -->
-                        <span class="icon is-small is-left">
-                            <i class="fas fa-user"></i>
-                        </span>
-                    </p>
-                </div>
-                <div class="field is-grouped">
-                    <div class="control">
-                        <button class="button is-primary" name="add-comment">Scrivi Commento</button> <!-- PULSANTE Conferma -->
-                    </div>
-                </div>
-            </form>
-
-        </div>
+            </div>
+        <?php endif; ?>
     </section>
 
     <?php include 'template/footer.php'; ?>

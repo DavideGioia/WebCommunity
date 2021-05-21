@@ -3,6 +3,7 @@
 <?php
 /* SE VIENE PREMUTO IL TASTO REGISTRATI */
 if (isset($_POST["register"])) {
+
     /* RICEZIONE INPUT DAL FORM */
     $user_username = mysqli_real_escape_string($connection, stripslashes($_POST["username"]));
     $user_name = mysqli_real_escape_string($connection, stripslashes($_POST["name"]));
@@ -71,7 +72,6 @@ if (isset($_POST["register"])) {
                 $sql = "INSERT INTO scelte (ID_utente, ID_categoria)
                         VALUES ('$user[ID]', '$is_checked')";
                 mysqli_query($connection, $sql);
-                echo "variabile: " . $is_checked;
             }
         }
 
@@ -94,7 +94,8 @@ if (isset($_POST["register"])) {
 
 <body>
     <?php include 'template/header.php' ?>
-    <!-- Hero -->
+
+    <!-- INIZIO Hero Banner -->
     <section class="hero is-small is-primary">
         <div class="hero-body">
             <div class="container">
@@ -103,101 +104,119 @@ if (isset($_POST["register"])) {
             </div>
         </div>
     </section>
-    <!-- Sezione Form -->
+
+    <!-- CONTENUTO PAGINA -->
     <section class="section">
-        <div class="container is-max-desktop box">
-            <?php if ($_SESSION["error"] == 1) : ?>
+        <?php if (!isset($_SESSION["login"])) : ?>
+            <div class="container is-max-desktop box">
+
+                <!-- MOSTRA MESSAGGIO IN CASO DI ERRORE -->
+                <?php if ($_SESSION["error"] == 1) : ?>
+                    <article class="message is-danger">
+                        <div class="message-body">
+                            <?php echo $error; ?>
+                        </div>
+                    </article>
+                <?php endif; ?>
+
+                <!-- INIZIO Form -->
+                <form action="" method="post">
+                    <div class="field">
+                        <label class="label">Nome Utente</label>
+                        <p class="control has-icons-left">
+                            <input class="input" type="text" placeholder="Nome Utente" name="username"> <!-- INPUT Nome Utente -->
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-user"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <label class="label">Nome</label>
+                        <p class="control has-icons-left">
+                            <input class="input" type="text" placeholder="Nome" name="name"> <!-- INPUT Nome -->
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-user"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <label class="label">Cognome</label>
+                        <p class="control has-icons-left">
+                            <input class="input" type="text" placeholder="Cognome" name="surname"> <!-- INPUT Cognome -->
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-user"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <label class="label">E-Mail</label>
+                        <p class="control has-icons-left">
+                            <input class="input" type="email" placeholder="E-Mail" name="email"> <!-- INPUT E-Mail -->
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <label class="label">Password</label>
+                        <div class="field-body">
+                            <div class="field">
+                                <p class="control is-expanded has-icons-left">
+                                    <input class="input" type="password" placeholder="Password" name="password"> <!-- INPUT Password -->
+                                    <span class="icon is-small is-left">
+                                        <i class="fas fa-lock"></i>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="field">
+                                <p class="control is-expanded has-icons-left has-icons-right">
+                                    <input class="input" type="password" placeholder="Conferma Password" name="confirmpassword"> <!-- INPUT Conferma Password -->
+                                    <span class="icon is-small is-left">
+                                        <i class="fas fa-lock"></i>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Seleziona le Categorie che preferisci</label>
+                        <div class="field-body">
+                            <div class="field">
+
+                                <!-- STAMPA SU SCHERMO LE CATEGORIE INSERITE NEL DATABASE -->
+                                <?php
+                                $sql = "SELECT *
+                                FROM categorie";
+                                $results = mysqli_query($connection, $sql);
+
+                                while ($row = mysqli_fetch_array($results)) {
+                                    $category_name = $row["nome"];
+                                    $category_id = $row["ID"];
+                                    echo "<label class='checkbox'>" . "<input type='checkbox' name='$category_name' value='$category_id'>" . " " . $category_name . "</label>";
+                                }
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-grouped">
+                        <div class="control">
+                            <button class="button is-primary" name="register">Registrati</button> <!-- PULSANTE Conferma -->
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        <?php else : ?>
+            <div class="container is-max-desktop">
                 <article class="message is-danger">
                     <div class="message-body">
-                        <?php echo $error; ?>
+                        Hai giá effettuato la registrazione
                     </div>
                 </article>
-            <?php endif; ?>
-            <form action="" method="post">
-                <div class="field">
-                    <label class="label">Nome Utente</label>
-                    <p class="control has-icons-left">
-                        <input class="input" type="text" placeholder="Nome Utente" name="username">
-                        <span class="icon is-small is-left">
-                            <i class="fas fa-user"></i>
-                        </span>
-                    </p>
-                </div>
-                <div class="field">
-                    <label class="label">Nome</label>
-                    <p class="control has-icons-left">
-                        <input class="input" type="text" placeholder="Nome" name="name">
-                        <span class="icon is-small is-left">
-                            <i class="fas fa-user"></i>
-                        </span>
-                    </p>
-                </div>
-                <div class="field">
-                    <label class="label">Cognome</label>
-                    <p class="control has-icons-left">
-                        <input class="input" type="text" placeholder="Cognome" name="surname">
-                        <span class="icon is-small is-left">
-                            <i class="fas fa-user"></i>
-                        </span>
-                    </p>
-                </div>
-                <div class="field">
-                    <label class="label">E-Mail</label>
-                    <p class="control has-icons-left">
-                        <input class="input" type="email" placeholder="E-Mail" name="email">
-                        <span class="icon is-small is-left">
-                            <i class="fas fa-envelope"></i>
-                        </span>
-                    </p>
-                </div>
-                <div class="field">
-                    <label class="label">Password</label>
-                    <div class="field-body">
-                        <div class="field">
-                            <p class="control is-expanded has-icons-left">
-                                <input class="input" type="password" placeholder="Password" name="password">
-                                <span class="icon is-small is-left">
-                                    <i class="fas fa-lock"></i>
-                                </span>
-                            </p>
-                        </div>
-                        <div class="field">
-                            <p class="control is-expanded has-icons-left has-icons-right">
-                                <input class="input" type="password" placeholder="Conferma Password" name="confirmpassword">
-                                <span class="icon is-small is-left">
-                                    <i class="fas fa-lock"></i>
-                                </span>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="field">
-                    <label class="label">Seleziona le Categorie che preferisci</label>
-                    <div class="field-body">
-                        <!-- STAMPA SU SCHERMO LE CATEGORIE INSERITE NEL DATABASE -->
-                        <?php
-                        $sql = "SELECT *
-                                FROM categorie";
-                        $results = mysqli_query($connection, $sql);
-
-                        while ($row = mysqli_fetch_array($results)) {
-                            $category_name = $row["nome"];
-                            $category_id = $row["ID"];
-                            echo "<label class='checkbox'>" . "<input type='checkbox' name='$category_name' value='$category_id'>" . $category_name . "</label>";
-                        }
-                        ?>
-
-                    </div>
-                </div>
-                <div class="field is-grouped">
-                    <div class="control">
-                        <button class="button is-primary" name="register">Registrati</button>
-                    </div>
-                </div>
-
-            </form>
-        </div>
+            </div>
+        <?php endif; ?>
     </section>
+
     <?php include 'template/footer.php'; ?>
 
     <?php include 'template/debug.php'; ?>

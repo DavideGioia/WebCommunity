@@ -1,3 +1,4 @@
+<!-- INIZIO Barra di Navigazione -->
 <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="container">
         <div class="navbar-brand">

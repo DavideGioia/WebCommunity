@@ -15,6 +15,7 @@
 <body>
     <?php include 'template/header.php' ?>
 
+    <!-- INIZIO Hero Banner -->
     <section class="hero is-primary">
         <div class="hero-body ">
             <div class="container">
@@ -24,13 +25,18 @@
         </div>
     </section>
 
+    <!-- CONTENUTO PAGINA -->
     <section class="section">
         <div class="container is-max-desktop">
             <h1 class="title">Lista Eventi</h1>
+
+            <!-- SE L'UTENTE HA EFFETTUATO L'ACCESSO -->
             <?php if (isset($_SESSION["login"])) : ?>
                 <div class="control">
                     <a class="button is-primary" href="add-event.php">Inserisci nuovo Evento</a>
                 </div>
+                <br>
+                <!-- ALTRIMENTI MOSTRA IL MESSAGGIO PER L'OSPITE -->
             <?php else : ?>
                 <article class="message is-info">
                     <div class="message-header">
@@ -42,12 +48,17 @@
                     </div>
                 </article>
             <?php endif; ?>
+
             <?php
             $sql = "SELECT *,eventi.ID AS IDEvento, utenti.ID AS IDUtente
                     FROM eventi INNER JOIN utenti
                     ON ID_utente = utenti.ID ";
             $result = mysqli_query($connection, $sql);
+
+            /* STAMPA SU SCHERMO TUTTI GLI EVENTI */
             while ($row = mysqli_fetch_array($result)) : ?>
+
+                <!-- INIZIO Card -->
                 <div class="card">
                     <div class="card-content">
                         <div class="media">
@@ -65,6 +76,8 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- INIZIO Modal/Popup -->
                 <div class="modal" id="comment-list<?php echo $row["IDEvento"]; ?>">
                     <div class="modal-background"></div>
                     <div class="modal-card">
@@ -78,21 +91,54 @@
                                     FROM post INNER JOIN utenti ON ID_utente = utenti.ID
                                     WHERE ID_evento = $row[IDEvento]";
                             $results2 = mysqli_query($connection, $sql);
+
+                            /* STAMPA SU SCHERMO I COMMENTI SE SONO MAGGIORI DI 0 */
                             if (mysqli_num_rows($results2) > 0) : ?>
                                 <?php while ($row2 = mysqli_fetch_array($results2)) : ?>
-                                    <strong>[Voto: <?php echo $row2["voto"]; ?>] <?php echo $row2["username"]; ?>: </strong><?php echo $row2["commento"]; ?>
+                                    <!-- INIZIO Commento -->
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <div class="media">
+                                                <div class="media-left">
+                                                    <figure class="image is-48x48">
+                                                        <img src="img/default-user.jpg" alt="Placeholder image">
+                                                    </figure>
+                                                </div>
+                                                <div class="media-content">
+                                                    <p class="title is-4"><?php echo $row2["username"]; ?></p>
+                                                    <p class="subtitle is-6">Valutazione: <?php echo $row2["voto"]; ?></p>
+                                                </div>
+                                            </div>
+
+                                            <div class="content">
+                                                <p><?php echo $row2["commento"]; ?></p>
+                                                <br>
+                                                <time datetime="">Pubblicato il <?php echo $row2["data"]; ?></time>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <br>
                                 <?php endwhile; ?>
                             <?php else : ?>
-                                <p>Al momento non ci sono commenti, scrivine uno!</p>
+                                <article class="message is-info">
+                                    <div class="message-body">
+                                        Al momento non ci sono commenti, scrivine uno!
+                                    </div>
+                                </article>
                             <?php endif; ?>
                         </section>
-                        <footer class="modal-card-foot">
-                            <a class="button is-success" href="add-comment.php?event=<?php echo $row["IDEvento"] ?>">Scrivi un Commento</a>
-                        </footer>
+
+                        <!-- MOSTRA SOLO SE L'UTENTE HA EFFETTUATO L'ACCESSO -->
+                        <?php if (isset($_SESSION["login"])) : ?>
+                            <footer class="modal-card-foot">
+                                <a class="button is-primary" href="add-comment.php?event=<?php echo $row["IDEvento"] ?>">Scrivi un Commento</a>
+                            </footer>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <br>
+
+                <!-- AGGIUNGE LA FUNZIONE PER APRIRE I POPUP A SECONDA DELL'EVENTO -->
                 <script>
                     $("#show-comment<?php echo $row['IDEvento'] ?>").click(function() {
                         $("#comment-list<?php echo $row["IDEvento"]; ?>").toggleClass("is-active");
@@ -101,6 +147,7 @@
             <?php endwhile; ?>
         </div>
     </section>
+
     <?php include 'template/footer.php' ?>
 
     <?php include 'template/debug.php'; ?>
