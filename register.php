@@ -49,7 +49,7 @@ if (isset($_POST["register"])) {
 
         mysqli_query($connection, $sql);
 
-        // Inserisce nella tabella scelte le categorie scelte dall'utente
+        // Inserisce nella tabella le categorie scelte dall'utente
         $sql = "SELECT *
                 FROM categorie";
         $results = mysqli_query($connection, $sql);

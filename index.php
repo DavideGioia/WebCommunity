@@ -50,9 +50,12 @@
             <?php endif; ?>
 
             <?php
-            $sql = "SELECT *,eventi.ID AS IDEvento, utenti.ID AS IDUtente
-                    FROM eventi INNER JOIN utenti
-                    ON ID_utente = utenti.ID ";
+            $sql = "SELECT *,eventi.ID AS IDEvento, utenti.ID AS IDUtente, categorie.nome AS nomecategoria
+                    FROM eventi 
+                    INNER JOIN utenti
+                    ON ID_utente = utenti.ID 
+                    INNER JOIN categorie
+                    ON ID_categoria = categorie.ID";
             $result = mysqli_query($connection, $sql);
 
             /* STAMPA SU SCHERMO TUTTI GLI EVENTI */
@@ -63,13 +66,13 @@
                     <div class="card-content">
                         <div class="media">
                             <div class="media-content">
-                                <p class="title is-4"><?php echo $row["titolo"] ?></p>
-                                <p class="subtitle is-6"><?php echo "Pubblicato da " . $row["username"] . " - " . $row["paese"] . ", " . $row["via"];  ?></p>
+                                <p class="title is-4"><small><?php echo $row["nomecategoria"] ?></small>: <?php echo $row["titolo"] ?> </p>
+                                <p class="subtitle is-6"><?php echo $row["paese"] . " " .  $row["cap"] . ", " . $row["via"] . " in provincia di " . $row["provincia"]; ?></p>
                             </div>
                         </div>
                         <div class="content">
                             <br>
-                            <time datetime="2016-1-1"><?php echo "Pubblicato il " . $row["data"] . " alle " . $row["ora"] ?></time>
+                            <time datetime=""><?php echo "Pubblicato il " . $row["data"] . " alle " . $row["ora"] . " da " . $row["username"] ?></time>
                         </div>
                         <div class="buttons">
                             <button class="button is-primary is-light" id="show-comment<?php echo $row["IDEvento"] ?>">Mostra Commenti</button>
@@ -86,6 +89,7 @@
                             <button class="delete" aria-label="close"></button>
                         </header>
                         <section class="modal-card-body">
+                            <p class="title is-4">Valutazione Evento</p>
                             <?php
                             $sql = "SELECT *
                                     FROM post INNER JOIN utenti ON ID_utente = utenti.ID

@@ -32,7 +32,7 @@ unset($_SESSION["login"]);
 
     <!-- CONTENUTO PAGINA -->
     <section class="section">
-        <?php if (!$_SESSION["login"]) : ?>
+        <?php if (isset($_SESSION["login"])) : ?>
             <div class="container is-max-desktop">
 
                 <!-- MESSAGGIO DI DISCONNESSIONE -->
@@ -61,7 +61,7 @@ unset($_SESSION["login"]);
     </section>
 
     <!-- REINDERIZZAMENTO ALL'INDEX CON TIMER DI 5 SECONDI -->
-    <?php header("refresh:5;url=http://localhost/ELABORATO/index.php"); ?>
+    <?php header("refresh:5;url=index.php"); ?>
 
     <?php include 'template/footer.php' ?>
 
