@@ -6,7 +6,7 @@ Web Community é l'Elaborato di INFORMATICA e SISTEMI E RETI che é stato realiz
 Il Sito Web é stato realizzato e sviluppato interamente in ITALIANO per questioni di praticitá e tempistica.
 
 ## Indice
-- [Funzionamento]
-- [Installazione]
-    - [Database]
-    - [Piattaforma]
+- [Funzionamento](#funzionamento)
+- [Installazione](#installazione)
+    - [Database](#database)
+    - [Piattaforma](#piattaforma)
