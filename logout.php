@@ -32,32 +32,22 @@ unset($_SESSION["login"]);
 
     <!-- CONTENUTO PAGINA -->
     <section class="section">
-        <?php if (isset($_SESSION["login"])) : ?>
-            <div class="container is-max-desktop">
+        <div class="container is-max-desktop">
 
-                <!-- MESSAGGIO DI DISCONNESSIONE -->
-                <article class="message is-success">
-                    <div class="message-header">
-                        <p>Sei uscito dal Profilo</p>
-                        <button class="delete" aria-label="delete"></button>
-                    </div>
-                    <div class="message-body">
-                        Sei uscito correttamente dal tuo profilo, verrai reindirizzato alla Homepage tra 5 secondi!
-                    </div>
-                </article>
+            <!-- MESSAGGIO DI DISCONNESSIONE -->
+            <article class="message is-success">
+                <div class="message-header">
+                    <p>Sei uscito dal Profilo</p>
+                    <button class="delete" aria-label="delete"></button>
+                </div>
+                <div class="message-body">
+                    Sei uscito correttamente dal tuo profilo, verrai reindirizzato alla Homepage tra 5 secondi!
+                </div>
+            </article>
 
-                <!-- BARRA DI CARICAMENTO -->
-                <progress class="progress is-small is-primary" max="100">15%</progress>
-            </div>
-        <?php else : ?>
-            <div class="container is-max-desktop">
-                <article class="message is-danger">
-                    <div class="message-body">
-                        Non hai accesso a questa pagina!
-                    </div>
-                </article>
-            </div>
-        <?php endif; ?>
+            <!-- BARRA DI CARICAMENTO -->
+            <progress class="progress is-small is-primary" max="100">15%</progress>
+        </div>
     </section>
 
     <!-- REINDERIZZAMENTO ALL'INDEX CON TIMER DI 5 SECONDI -->

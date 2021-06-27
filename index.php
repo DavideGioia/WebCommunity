@@ -89,7 +89,6 @@
                             <button class="delete" aria-label="close"></button>
                         </header>
                         <section class="modal-card-body">
-                            <p class="title is-4">Valutazione Evento</p>
                             <?php
                             $sql = "SELECT *
                                     FROM post INNER JOIN utenti ON ID_utente = utenti.ID

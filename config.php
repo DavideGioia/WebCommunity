@@ -1,7 +1,7 @@
 <?php
 /* Configurazione Generale */
 $website_name = "Web Community"; // Modifica il nome del Sito Web in tutte le pagine
-$show_debug = true; // Mostra le variabili per il debug
+$show_debug = false; // Mostra le variabili per il debug
 
 
 /* Connessione DATABASE */
