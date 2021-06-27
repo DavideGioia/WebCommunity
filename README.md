@@ -8,7 +8,7 @@ Il Sito Web é stato realizzato e sviluppato interamente in ITALIANO per questio
 ## Indice
 - [Caratteristiche](#caratteristiche)
     - [Aggiunte](#aggiunte)
-    - [Struttura Database](#strutturadatabase)
+    - [Struttura Database](#struttura)
 - [Installazione](#installazione)
     - [Database](#database)
     - [Piattaforma](#piattaforma)
@@ -21,7 +21,7 @@ Il Sito Web é stato realizzato e sviluppato interamente in ITALIANO per questio
 - Possibilitá di inserire nuovi Eventi scegliendone il Titolo, il Luogo, la Categoria e gli Atleti;
 - Possibilitá di visualizzare i commenti di un evento e di inserirne uno aggiungendo una valutazione da 1 a 10;
 
-### Struttura Database
+### Struttura
 <img src="https://i.imgur.com/ZOAtowb.png" />
 
 
