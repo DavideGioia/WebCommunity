@@ -8,7 +8,7 @@ Il Sito Web é stato realizzato e sviluppato interamente in ITALIANO per questio
 ## Indice
 - [Caratteristiche](#caratteristiche)
     - [Aggiunte](#aggiunte)
-    - [Struttura Database](#struttura database)
+    - [Struttura Database](#strutturadatabase)
 - [Installazione](#installazione)
     - [Database](#database)
     - [Piattaforma](#piattaforma)
